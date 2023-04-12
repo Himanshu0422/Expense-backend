@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const path = require('path');
 require("dotenv").config();
 
 const app = express();
@@ -8,6 +9,9 @@ app.use(express.json());
 app.use(cors());
 mongoose.connect(process.env.DB);
 const connection = mongoose.connection;
+
+const PORT = process.env.PORT || 3002;
+app.use(express.static(path.join(__dirname+'/public/build')));
 
 connection.on("connected", () => {
   console.log("MongoDB connection is successful");
@@ -58,6 +62,6 @@ app.put('/data/:id', async (req, res) => {
     }
 })
 
-app.listen(3002, function(req, res){
-    console.log("connected on port 3002");
+app.listen(PORT, function(req, res){
+    console.log(`connected on port ${PORT}`);
 });
